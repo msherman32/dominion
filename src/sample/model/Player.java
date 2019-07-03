@@ -27,6 +27,7 @@ public class Player {
 
     public Player(int playerNo) {
         this.playerId = playerNo;
+        //todo: why is all this here??
         deck = createStartDeck();
         drawNewHand();
         discardPile = new ArrayList();

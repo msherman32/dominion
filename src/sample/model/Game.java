@@ -30,6 +30,7 @@ public class Game {
     private static Map<ActionCard, Integer> actionCards;
 
     private static LinkedList<Player> players;
+    //todo: replace with Players
 
     public Game(int numPlayers) {
         this.numPlayers = numPlayers; //todo: check bounds on the number of players for the actual game
