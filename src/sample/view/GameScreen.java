@@ -18,9 +18,9 @@ import sample.model.cards.treasury_cards.TreasuryCard;
 import sample.model.cards.victory_cards.VictoryCard;
 import sample.model.visitor_pattern.Visitor;
 
-public class GameScreen extends BorderPane {
+import static sample.model.Game.getCurrentPlayer;
 
-    private Game game;
+public class GameScreen extends BorderPane {
 
     private static CardView lastClicked;
 
@@ -34,13 +34,10 @@ public class GameScreen extends BorderPane {
     private static AvailableActionCards availableActionCards;
 
     public GameScreen(Game game) {
-        this.game = game;
 
-        Player firstPlayer = game.getPlayers().getFirst();
-
-        options = new TurnOptions();
-        this.handView = new HandView(firstPlayer.getHand());
-        this.playerStats = new PlayerStats(firstPlayer);
+        this.options = new TurnOptions(); //fixme: should turn options be based on player?
+        this.handView = new HandView(getCurrentPlayer().getHand());
+        this.playerStats = new PlayerStats(getCurrentPlayer());
         this.availableVictoryCards = new AvailableVictoryCards(game);
         this.availableTreasuryCards = new AvailableTreasuryCards(game);
         this.availableActionCards = new AvailableActionCards(game);
@@ -115,6 +112,11 @@ public class GameScreen extends BorderPane {
 
     public static boolean nothingSelected() {
         return lastClicked == null || !lastClicked.isSelected();
+    }
+
+    public static void updateForCurrentPlayer(Player currentPlayer) {
+        handView = new HandView(currentPlayer.getHand());
+        playerStats = new PlayerStats(currentPlayer);
     }
 
     public static void updateAvailability(Card card) {

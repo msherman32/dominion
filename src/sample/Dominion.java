@@ -44,7 +44,7 @@ public class Dominion extends Application {
         Game game = new Game(5); //selection
         GameScreen gameScreen = new GameScreen(game);
         //                myStage.setScene(new Scene(gameScreen));
-        controller = new Controller(gameScreen, game);
+        this.controller = new Controller(gameScreen, game);
         //                controller.playing();
         //            }
         //        });

@@ -11,6 +11,8 @@ import sample.Controller;
 import sample.model.Hand;
 import sample.model.cards.Card;
 
+import static sample.model.Game.getCurrentPlayer;
+
 public class HandView extends HBox {
 
     private Hand hand;
@@ -34,10 +36,8 @@ public class HandView extends HBox {
         return hand;
     }
 
-
-
     public void update() {
-        hand = Controller.getGame().getPlayer().getHand();
+        hand = getCurrentPlayer().getHand();
         this.getChildren().clear();
         ArrayList<Node> cards = new ArrayList<>();
         for (Card card : hand.getCards()) {

@@ -19,7 +19,7 @@ public class Player {
     private static final int INITIAL_NUM_ESTATE = 3;
 
     private int playerId;
-    private Hand hand;
+    private static Hand hand;
     private List<Card> deck;
     private List<Card> discardPile;
     private int score;
@@ -61,6 +61,7 @@ public class Player {
     public boolean canBuyCard(Card card) {
         return card.getCost() <= hand.getMoneyAmount();
     }
+
     public void buyCard(Visitable card){
 //        if (((Card) card).getCost() > hand.getBuyingPower()) {
 //            throw new RuntimeException(String.format("Card costs %d, but your buying power is only %d",
@@ -85,7 +86,7 @@ public class Player {
 
     public void trash(Card card) {
 
-        //add the card back to the hashset of the game
+        //todo: add the card back to the hashset of the game
     }
 
     public void discard(Card card) {

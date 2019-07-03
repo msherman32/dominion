@@ -4,14 +4,14 @@ import java.util.*;
 
 public class Players implements List<Node> {
 
-    Node head;
-    Node tail;
+    private Node head;
+    private Node tail;
+    private int size;
 
-    int numPlayers;
-    int currentPlayer;
+    private int numPlayers;
+    private int currentPlayer;
 
     public Players(int numPlayers) {
-
         this.numPlayers = numPlayers;
         for (int i=0; i < numPlayers; i++) {
             Player player = new Player(i);
@@ -21,14 +21,23 @@ public class Players implements List<Node> {
         this.currentPlayer = 0;
     }
 
+    public Player getCurrentPlayer() {
+        return this.get(currentPlayer).getPlayer();
+    }
+
+    public Player getNextPlayer() {
+        currentPlayer = ((currentPlayer++) % numPlayers); //go to next player within bounds
+        return this.getCurrentPlayer();
+    }
+
     @Override
     public int size() {
-        return numPlayers;
+        return this.size;
     }
 
     @Override
     public boolean isEmpty() {
-        return numPlayers == 0;
+        return this.size == 0;
     }
 
     @Override
@@ -48,25 +57,27 @@ public class Players implements List<Node> {
 
     @Override
     public boolean add(Node node) {
-        if (this.head == null) {
-            head = node;
+        if (size == 0) {
+            if (this.head == null) {
+                head = node;
+            }
+            if (this.tail == null) {
+                tail = node;
+            }
         }
-        if (this.tail == null) {
-            tail = node;
-        }
-        if (currentPlayer == 1) {
+        if (size == 1) {
             head.setNext(node);
             node.setNext(head);
             tail = node;
         }
-        if (currentPlayer > 1) {
+        if (size > 1) {
             tail.setNext(node);
             node.setNext(head);
             tail = node;
         }
 
-        currentPlayer = (currentPlayer++) % numPlayers; //keeps currentPlayer within bounds
-        return false;
+        size++;
+        return true;
     }
 
     @Override
@@ -91,16 +102,21 @@ public class Players implements List<Node> {
 
     @Override
     public Node get(int index) {
-        if (index >= numPlayers) {
-            throw new IndexOutOfBoundsException(String.format("Index %d is greater than Number of Players: %d", index, numPlayers));
+        if (index >= size) {
+            throw new IndexOutOfBoundsException(String.format("Index %d is outside range: [0,%d]", index, size));
+        }
+        if (index == size - 1){
+            return tail;
+        }
+        if (size == 0) {
+            return head;
         }
         Node temp = head;
         int i = 0;
         while (i < index) {
-            temp = temp.next;
+            temp = temp.getNext();
             i++;
         }
-
         return temp;
     }
 
@@ -112,10 +128,6 @@ public class Players implements List<Node> {
     @Override
     public void add(int index, Node element) {
 
-    }
-
-    public Player getCurrentPlayer() {
-        return this.get(currentPlayer).getPlayer();
     }
 
     @Override

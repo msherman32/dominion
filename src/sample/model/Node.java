@@ -2,8 +2,12 @@ package sample.model;
 
 public class Node {
 
-    Player current;
-    Node next;
+    private Player current;
+    private Node next;
+
+    public Node (Player current) {
+        this(current, null);
+    }
 
     public Node(Player current, Node next) {
         this.current = current;
@@ -15,6 +19,8 @@ public class Node {
     }
 
     public void setNext(Node node) {
-        next = node;
+        this.next = node;
     }
+
+    public Node getNext() { return next; }
 }

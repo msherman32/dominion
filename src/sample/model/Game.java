@@ -23,17 +23,16 @@ public class Game {
     private static final int UNIVERSAL_TREASURY_CARDS = 50;
     private static final int UNIVERSAL_ACTIONS_CARDS = 10;
 
-    private int numPlayers;
-
     private static Map<VictoryCard, Integer> victoryCards;
     private static Map<TreasuryCard, Integer> treasuryCards;
     private static Map<ActionCard, Integer> actionCards;
 
-    private static LinkedList<Player> players;
-    //todo: replace with Players
+    private int numPlayers;
+    private static Players players;
 
     public Game(int numPlayers) {
         this.numPlayers = numPlayers; //todo: check bounds on the number of players for the actual game
+
         victoryCards = new HashMap<>();
         if (numPlayers > 2) {
             victoryCards.put(new Estate(), MULTIPLE_PLAYER_VICTORY_CARDS);
@@ -54,33 +53,24 @@ public class Game {
             actionCards.put(new Village(), UNIVERSAL_ACTIONS_CARDS);
         }
 
-        this.players = new LinkedList<>();
-        for (int i = 1; i < numPlayers; i++) {
-            Player player = new Player(i);
-            players.add(player);
-        }
+        this.players = new Players(this.numPlayers);
     }
 
     public static Player getCurrentPlayer() {
-        return players.getFirst(); //todo: fix this to actually get the current player or just use the GameScreen current player?
+        return players.getCurrentPlayer(); //todo: fix this to actually get the current player or just use the GameScreen current player?
     }
 
-    public void play() {
-        Iterator<Player> iterator = players.iterator();
-        Player player = iterator.next(); //first player
-        while (1 > 0) {//notOutOfCards()
-            player.takeTurn();
-
-            player = iterator.next(); //circularly linked list
-        }
+    public void goToNextPlayer() {
+        players.getNextPlayer();
     }
 
-    public int getNumPlayers() {
-        return numPlayers;
+    public boolean isInProgress() {
+        //! (3 action cards are depleted) && ! (1 esate is depeleted)
+        return true;
     }
 
-    public LinkedList<Player> getPlayers() {
-        //        make this immutable
+    public Players getPlayers() {
+        //todo: make this immutable
         return players;
     }
 
@@ -110,18 +100,4 @@ public class Game {
         Integer available = actionCards.get(actionCard);
         actionCards.put(actionCard, available--);
     }
-
-
-    public Player getPlayer() {
-        return players.getFirst();
-    }
-
-    public boolean isInProgress() {
-        //! (3 action cards are depleted) && ! (1 esate is depeleted)
-        return true;
-    }
-
-    //    public Player getCurrentPlayer() {
-    //        return currentPlayer;
-    //    }
 }
